@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
  export default function EditCoursemodel({ setCourse , current}) {
-  const [data, setData] = useState(current);
+  const [data, setData] = useState({});
 
-  console.log(data)
+  useEffect(()=>{
+    setData(current)
+  },[current])
 
   function submit(e) {
     e.preventDefault();
-    console.log(data);
     if (
       !data?.course?.trim() ||
       !data?.module?.trim() ||
@@ -18,10 +19,12 @@ import React, { useState } from "react";
     }
 
     setCourse((state) => {
-      let newState = [
-        ...state,
-        {...data,id:state.length+1+''}
-      ];
+      let newState = state.map(val=>{
+        if(val.id === data.id){
+          return data
+        }
+        return val
+      })
         localStorage.setItem("course", JSON.stringify(newState));
         return newState
     });

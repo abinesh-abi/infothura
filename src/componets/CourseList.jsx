@@ -18,6 +18,10 @@ export default function CourseList() {
     }
   }, []);
 
+  useEffect(()=>{
+    if(characters.length)localStorage.setItem("course", JSON.stringify(characters));
+  },[characters])
+
   function deleteCourse(id){
     let conf = window.confirm('Are you sure to remove')
     if(conf){
