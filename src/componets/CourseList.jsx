@@ -6,6 +6,7 @@ import EditCoursemodel from "./EditCoursemodel";
 
 export default function CourseList() {
   const [characters, updateCharacters] = useState([]);
+  const [edit, setEdit] = useState({})
 
   useEffect(() => {
     let isExist = JSON.parse(localStorage.getItem("course"));
@@ -17,11 +18,15 @@ export default function CourseList() {
     }
   }, []);
 
-  // useEffect(()=>{
-  //   // localStorage.removeItem()
-  //   localStorage.setItem("course", JSON.stringify(intialCourse));
-  // },[characters.length])
-  console.log('hi')
+  function deleteCourse(id){
+    let conf = window.confirm('Are you sure to remove')
+    if(conf){
+      let final = characters.filter(val=>val.id !== id)
+      localStorage.setItem("course", JSON.stringify(final));
+      updateCharacters(final)
+    }
+  }
+
 
   function handleOnDragEnd(result) {
     if (!result.destination) return;
@@ -85,10 +90,13 @@ export default function CourseList() {
                                   type="button"
                                   data-bs-toggle="modal"
                                   data-bs-target="#EditCourse"
+                                  onClick={()=>setEdit(val)}
                                 >
                                   Edit
                                 </a>
-                                <a className="btn bg-danger text-white mx-1">
+                                <a className="btn bg-danger text-white mx-1"
+                                  onClick={()=>deleteCourse(val.id)}
+                                >
                                   Delete
                                 </a>
                               </td>
@@ -106,7 +114,7 @@ export default function CourseList() {
         </div>
       </div>
       <AddCoursemodel setCourse={updateCharacters} />
-      <EditCoursemodel />
+      <EditCoursemodel setCourse={updateCharacters} current={edit} />
     </>
   );
 }

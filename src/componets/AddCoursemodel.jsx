@@ -16,11 +16,14 @@ function AddCoursemodel({ setCourse }) {
     }
 
     setCourse((state) => {
-      return [
+      let newState = [
         ...state,
         {...data,id:state.length+1+''}
       ];
+        localStorage.setItem("course", JSON.stringify(newState));
+        return newState
     });
+
   }
 
   return (
